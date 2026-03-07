@@ -2,13 +2,13 @@ package core
 
 import "math"
 
-type AbilityScore int
+type Ability int
 
-func (s AbilityScore) Modifier() int {
-	return int(math.Floor(float64((s - 10) / 2)))
+func (s Ability) Score() int {
+	return int(math.Floor(float64(s - 10) / 2))
 }
 
-type AbilityScores struct {
-	Str AbilityScore
+type Abilities struct {
+	Str Ability
 	// TODO: complete
 }

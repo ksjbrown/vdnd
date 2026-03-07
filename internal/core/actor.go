@@ -4,7 +4,5 @@ package core
 //
 // This may be an NPC, player controlled character, etc..
 type Actor struct {
-	*AbilityScores
+	*Abilities
 }
-
-
