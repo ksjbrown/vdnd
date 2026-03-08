@@ -1,5 +1,40 @@
 # Dev Log
 
+## 2026-03-08
+
+Playing around with new Angular.
+Component based stuff seems so far pretty similar to Spring Boot.
+Will keep at it.
+
+## 2026-03-08
+
+Will try to nail down scope, and develop in a way that allows things to be added in the future.
+
+First, will just setup a basic character creation, upload, and display.
+
+Things that need to be shown:
+
+- Character
+  - Name
+  - Level
+  - Race
+  - Classes
+  - Origins
+  - Ability Scores 
+  - Proficiencies
+    - Equipment
+    - Saving Throws
+    - 
+
+I think I will set up in parallel the Angular app.
+So I can test and use the api in parallel.
+
+Should I use a monorepo for this?
+
+- I think we will, will keep each project in its own directory, `server/` and `client/`. 
+
+Docker compose will come at some point, tho I think for now I'll run everything locally on debug servers.
+
 ## 2026-03-07
 
 Fresh start, will try be more formal with this implementation.
