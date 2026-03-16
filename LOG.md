@@ -1,5 +1,20 @@
 # Dev Log
 
+## 2026-03-15
+
+Will just try to implement the a full character representation, send this data via API, and present this in our angular app.
+Refactoring of various character components can come later, separation of Character from NPC, etc.
+
+Good resource for this is just simply trying to recreate a character sheet.
+Better to structure all required data, then we can move onto more functional components.
+
+Also just had a thought, what could make this a lot cooler is using LLM to act as a GM.
+Combat rules, inventory, etc. will be still stored as actual code logic.
+But the creative parts, dialogues, etc. can definitely be generated.
+
+Will implement this as a DM Creative Director type separate component.
+Will probably use webhooks or similar to query responses from a separate server.
+
 ## 2026-03-08
 
 Playing around with new Angular.

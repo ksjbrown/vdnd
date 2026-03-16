@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func Test_Abilities_Modifier(t *testing.T) {
+func TestAbilitiesModifier(t *testing.T) {
 	tcs := []struct{
 		Name string
 		Score int
@@ -20,8 +20,8 @@ func Test_Abilities_Modifier(t *testing.T) {
 		{ Score: 14, Modifier: 2 },
 	}
 	for _, tc := range tcs {
-		score := Ability(tc.Score)
-		modifier := score.Score()
+		score := AbilityScore(tc.Score)
+		modifier := score.Modifier()
 		if tc.Modifier != modifier {
 			t.Errorf("ability score '%v' expects modifier '%v', got '%v'", tc.Score, tc.Modifier, modifier)
 		}
