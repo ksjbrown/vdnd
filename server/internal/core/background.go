@@ -1,5 +1,7 @@
 package core
 
+// Background defines the background of the character,
+// and the selected feats, ability boosts, etc.
 type Background struct {
 	Type          BackgroundType
 	Feat          Feat
@@ -28,6 +30,9 @@ const (
 )
 
 type BackgroundProficiencies struct {
-	Skills [2]SkillType
-	Tools  [1]ToolType
+	Skills [BackgroundProficiencySkillCount]SkillType
+	Tools  [BackgroundProficiencyToolCount]ToolType
 }
+
+const BackgroundProficiencySkillCount = 2
+const BackgroundProficiencyToolCount = 1

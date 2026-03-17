@@ -7,7 +7,7 @@ A virtual Dungeons and Dragons simulator / tracker / calculator.
 ### Build
 
 ```sh
-go -C server build -o bin/ ./cmd/vdnv
+go -C server build -o bin/ ./cmd/vdnd
 ```
 
 ### Run

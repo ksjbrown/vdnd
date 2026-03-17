@@ -1,5 +1,92 @@
 # Dev Log
 
+## 2026-03-17
+
+Thinking more about the combat loop and callbacks.
+Will probably have something like a Combat type, containing all relevant info.
+Combat can be sent to clients, and they must decide what action to take.
+They return an action type, and then a separate object containing the action relevant data.
+
+Combat Lifecycle hooks:
+- `OnInitiativeRoll(c *Combat)`
+- `OnCombatStart(c *Combat)`
+- `OnCombatEnd(c *Combat)`
+- `OnTurnStart(c *Combat)`
+- `OnTurnEnd(c *Combat)`
+- `OnCharacterTurnStart(c *Combat, ch *Character)`
+- `OnCharacterTurnEnd(c *Combat, ch *Character)`
+- `OnCharacterMoveStart(c *Combat, ch *Character, m *MoveAction)`
+- `On`
+
+Regarding AI usage, I woukd like to define a structure for dialogue, exploration, dialogue choices.
+Warhammer 40k Rogue Trader system will work well here I think.
+AI can generatively create all scenes.
+To begin, I'll probably hava the AI generate responses dynamically, it will probably be easier.
+
+Will probably develop this Director in Python, so we can natively use the cpp llama bindings.
+Director must request LLM responses to be in JSON, and we check output.
+
+Conceptually, how to split up Dialogues?
+
+A `Dialogue` presents some text, describing what is happening, or what is going on.
+`DialogueBranch` options define dialogue options or actions a character may take, and which dialogue ID this leads to.
+A dialogue branch most often leads to another dialogue.
+Dialogues can also lead to combat encounters, end dialogue, etc.
+
+Open Question, how do we handle the free exploration part? 
+I think it must be all handled thru dialogues, maybe we keep it to one-shot campaigns.
+This is also how its done in Real DnD.
+
+Dialogues must also exist in some greater context, maybe `Scenario`.
+This defines the location, the characters present, initial dialogue, etc.
+
+This shall be a hybrid design design of strict database json types, and conceptual descriptions ans characteristics of characters, places, etc.
+
+Some types that might be useful here:
+
+```python
+class Location:
+    description: str
+    
+
+class Scenario:
+    location: Location
+
+
+class Dialog:
+
+    # character who speaks the dialogue, or is the topic during narrator discussion.
+    speaker: Npc | None
+
+    # character who is being spoken to
+    spoken_to: Character | Npc | None
+
+class DialogueBranch:
+
+    # the dialogue that lead to this dialogue option
+    parent: Dialogue | None
+
+    # the text to display when presenting this option
+    text: str
+
+    # conditions that must be met to have this option visible
+    conditions = []
+
+    target = Dialogue | SkillCheck | AbilityCheck | Combat
+
+```
+
+What I'm also thinking a lot about now is a Godot frontend.
+Cartoony style sprite characters on an isometric grid.
+Use cover mechanics from Warhammer game rules.
+
+Visibility mechanics might be very cool!
+Dark light shading.
+Path tracing might need to he calculated on the server...
+
+But, designing and implementing a 3D grid based world might be pretty cool.
+Elevation in particular, what that means for visibility.
+
 ## 2026-03-15
 
 Will just try to implement the a full character representation, send this data via API, and present this in our angular app.
@@ -60,7 +147,7 @@ Maybe there will be something like a Combatant interface that embeds Actor.
 
 I'll call it Character for now, but if we want to serialize it, it will look something like:
 
-```json
+```json Example Character json representation
 {
     "hp": {
         "val": 10,
@@ -96,7 +183,6 @@ I'll call it Character for now, but if we want to serialize it, it will look som
 
 Maybe I need to decide the proper scale for what this should be.
 It's probably easy to make it a simple combat calculator, charater tracker, etc. 
-
 
 At the moment I'm just focussed on the combat side, but interesting to note some of the other rules about exploration scenarios.
 
