@@ -1,5 +1,50 @@
 # Dev Log
 
+## 2026-03-31
+
+Rethinking of types and things for simplification:
+
+- Almost all types will be declarative data structs
+- Logic will be performed in a select few types, probably Encounters.
+- Actions will be used to signify Character intent
+- Encounters will evaluate the consequences of those actions.
+
+Does it make sense to wrap everything in a function?
+Could be a LOT of ways for data to be modified.
+Might be better to hold everything behind interfaces.
+Will keep primary things behind interfaces, and keep as much as possible behavioural.
+
+## 2026-03-20
+
+`Action` will be an interface.
+This has the method `.Apply(Encounter)`.
+
+Another thought, i think i'll not include the actual chance based stuff in the action itself.
+Or at least, dont have the DieFormula perform the roll.
+We might need hooks to modify roll result, or react somehow to rolls.
+E.g. natural 20 on attack roll is critical hit.
+
+Before really looking into the combat lifecycle hooks, maybe take a high level look at what actualy happens.
+
+- Combat Begins
+- Initiative Calculated
+- Get next acting Character
+  - process incoming actions.
+  - wait until an end turn signal is received.
+- check for combat end conditions
+  - maybe enemies surrender after certain amount of damage.
+
+Combat context should define very fundamental operations.
+Since it tracks all active effects, modifiers, etc., it can apply these at the relevant times, or at least ensure lifecycle callbacks are run.
+
+
+
+
+## 2026-03-19
+
+Will try implement an attack action system.
+
+
 ## 2026-03-17
 
 Thinking more about the combat loop and callbacks.
@@ -16,7 +61,6 @@ Combat Lifecycle hooks:
 - `OnCharacterTurnStart(c *Combat, ch *Character)`
 - `OnCharacterTurnEnd(c *Combat, ch *Character)`
 - `OnCharacterMoveStart(c *Combat, ch *Character, m *MoveAction)`
-- `On`
 
 Regarding AI usage, I woukd like to define a structure for dialogue, exploration, dialogue choices.
 Warhammer 40k Rogue Trader system will work well here I think.
