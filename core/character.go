@@ -5,52 +5,61 @@ package core
 // Character represents any person, creature, or actor in the game, that can perform actions, be interacted with etc.
 //
 // Should contain all data required for character functionality.
-type Character struct {
+type CharacterData struct {
 	ID          CharacterID
-	background  *Background
-	class       *Class
-	subclasses  []Class
-	origin      *Origin
-	species     *Species
-	ac          *ArmorClass
-	progression *Progression
-	inventory   *Inventory
-	loadout     *Loadout
+	Background  *Background
+	Class       *Class
+	Subclasses  []Class
+	Origin      *Origin
+	Species     *Species
+	AC          *ArmorClass
+	Progression *Progression
+	Inventory   *Inventory
+	Loadout     *Loadout
+}
+
+type Character struct {
+	data *CharacterData
+}
+
+func NewCharacter(data *CharacterData) *Character {
+	return &Character{ data: data }
 }
 
 func (c *Character) Background() *Background {
-	return c.background
+	return c.data.Background
 }
 
 func (c *Character) Class() *Class {
-	return c.class
+	return c.data.Class
 }
 
 func (c *Character) Subclasses() []Class {
-	return c.subclasses
+	return c.data.Subclasses
 }
 
 func (c *Character) Origin() *Origin {
-	return c.origin
+	return c.data.Origin
 }
 
 func (c *Character) Species() *Species {
-	return c.species
+	return c.data.Species
 }
 
 func (c *Character) AC() *ArmorClass {
-	return c.ac
+	return c.data.AC
 }
 
 func (c *Character) Progression() *Progression {
-	return c.progression
+	return c.data.Progression
 }
 
 func (c *Character) Inventory() *Inventory {
-	return c.inventory
+	return c.data.Inventory
 }
 
 func (c *Character) Loadout() *Loadout {
-	return c.loadout
+	return c.data.Loadout
 }
+
 type CharacterID uint
