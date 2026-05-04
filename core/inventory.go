@@ -5,11 +5,15 @@ import (
 )
 
 type Inventory struct {
-	Items []InventoryItem
+	items []InventoryItem
+}
+
+func (i *Inventory) Items() []InventoryItem {
+	return i.items
 }
 
 type InventoryItem interface {
 	fmt.Stringer
 	Weight() float64
-	// Value()
+	Value() int
 }

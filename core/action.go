@@ -4,13 +4,11 @@ package core
 //
 // The action can be applied to a certain encounter, in which the
 // action is considered performed.
+//
+// Still need to plan, but will probably 
 type Action struct {
-	id   ActionID
+	ID   ActionID
 	kind ActionKind
-}
-
-func (a *Action) ID() ActionID {
-	return a.id
 }
 
 func (a *Action) Kind() ActionKind {
