@@ -43,7 +43,7 @@ const (
 
 type BackgroundProficiencies struct {
 	// TODO: restructure these
-	Skills []SkillType
-	Tools  []ToolType
+	skills []Skill
+	tools  []Tool
 }
 

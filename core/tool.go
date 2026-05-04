@@ -1,7 +1,7 @@
 package core
 
 type Tool struct {
-	Type ToolType
+	kind ToolKind
 }
 
-type ToolType int
+type ToolKind int

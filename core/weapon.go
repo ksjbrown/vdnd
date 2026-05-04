@@ -3,20 +3,18 @@ package core
 type Weapon struct {
 	Item
 	ID WeaponID
-	Type WeaponType
-	Properties []WeaponProperty
+	kind WeaponKind
+	properties []WeaponProperty
 }
 
 type WeaponID uint
 
-type WeaponType int
+type WeaponKind int
 
 type WeaponProperty struct {
-	Type WeaponPropertyType
-	Args WeaponPropertyArgs // some json representation of additional data, e.g range of weapon
+	kind WeaponPropertyKind
 }
 
-type WeaponPropertyArgs any
 
-type WeaponPropertyType int
+type WeaponPropertyKind int
 

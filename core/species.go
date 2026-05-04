@@ -1,7 +1,7 @@
 package core
 
 type Species struct {
-	Type SpeciesType
+	kind SpeciesKind
 }
 
-type SpeciesType int
+type SpeciesKind int
