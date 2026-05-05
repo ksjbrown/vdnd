@@ -1,9 +1,7 @@
 package core
 
-type ArmorClass struct {
-	base int
-}
+// ArmorClass represents a character's defensive protection value in D&D.
+//
+// This is represented as a simple integer
+type ArmorClass int
 
-func (a *ArmorClass) Base() int {
-	return a.base
-}

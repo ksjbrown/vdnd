@@ -3,21 +3,9 @@ package core
 // Background defines the background of the character,
 // and the selected feats, ability boosts, etc.
 type Background struct {
-	kind BackgroundKind
-	feat *Feat
-	proficiencies *BackgroundProficiencies
-}
-
-func (b *Background) Kind() BackgroundKind {
-	return b.kind
-}
-
-func (b *Background) Feat() *Feat {
-	return b.feat
-}
-
-func (b *Background) Proficiencies() *BackgroundProficiencies {
-	return b.proficiencies
+	Kind BackgroundKind
+	Feat Feat
+	Proficiencies *BackgroundProficiencies
 }
 
 type BackgroundKind int
@@ -43,7 +31,7 @@ const (
 
 type BackgroundProficiencies struct {
 	// TODO: restructure these
-	skills []Skill
-	tools  []Tool
+	Skills []Skill
+	Tools  []Tool
 }
 

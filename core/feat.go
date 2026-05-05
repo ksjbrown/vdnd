@@ -1,9 +1,20 @@
 package core
 
-type Feat struct {
-	Type FeatKind
-	data any // FeatType specific payload that may exist, e.g. AbilityScoreImprovement must choose an ability
+var featProviders map[FeatKind]FeatProvider
+
+func registerFeatProvider(kind FeatKind, provider FeatProvider) {
+
 }
+
+func init() {
+	featProviders = map[FeatKind]FeatProvider{}
+	// TODO: complete mapping
+	registerFeatProvider(FeatKindAbilityScoreImprovement, func() Feat { return struct{}{} })
+}
+
+type Feat interface {}
+
+type FeatProvider = func() Feat
 
 type FeatKind int
 
