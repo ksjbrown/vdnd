@@ -3,8 +3,8 @@ package core
 type Weapon struct {
 	Item
 	ID WeaponID
-	kind WeaponKind
-	properties []WeaponProperty
+	Kind WeaponKind
+	Properties []WeaponProperty
 }
 
 type WeaponID uint
@@ -15,6 +15,4 @@ type WeaponProperty struct {
 	kind WeaponPropertyKind
 }
 
-
 type WeaponPropertyKind int
-

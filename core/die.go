@@ -1,24 +1,33 @@
 package core
 
-import "math/rand"
+var globalDieIntProvider IntProvider
+
+func init() {
+	SetGlobalDieIntProvider(&RandomIntProvider{})
+}
+
+func SetGlobalDieIntProvider(ip IntProvider) {
+	globalDieIntProvider = ip
+}
 
 // Die represents an n-sided die
-type Die int
-
-func (d Die) Roll() int {
-	return rand.Intn(int(d + 1))
+type Die struct {
+	sides int
+	ip    IntProvider
 }
 
-type DieFormula struct {
-	n int
-	d Die
-	c int
-}
-
-func (df *DieFormula) Roll() int {
-	rolls := 0
-	for range df.n {
-		rolls += df.d.Roll()
+func NewDie(sides int, ip IntProvider) *Die {
+	return &Die{
+		sides: sides,
+		ip:    ip,
 	}
-	return rolls + df.c
+}
+
+func (d *Die) Roll() int {
+	return d.ip.GetInt(1, d.sides)
+}
+
+func NewDieD20() *Die {
+	dip := globalDieIntProvider
+	return NewDie(20, dip)
 }

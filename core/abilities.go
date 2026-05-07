@@ -1,5 +1,7 @@
 package core
 
+import "fmt"
+
 // Abilities holds the six ability scores for a character.
 type Abilities struct {
 	Strength     Ability
@@ -10,21 +12,29 @@ type Abilities struct {
 	Charisma     Ability
 }
 
-func (a *Abilities) Get(kind AbilityKind) *Ability {
+func (a *Abilities) GetAbility(kind AbilityKind) Ability {
 	switch kind {
+
 	case AbilityKindStrength:
-		return &a.Strength
+		return a.Strength
+
 	case AbilityKindDexterity:
-		return &a.Dexterity
+		return a.Dexterity
+
 	case AbilityKindConstitution:
-		return &a.Constitution
+		return a.Constitution
+
 	case AbilityKindWisdom:
-		return &a.Wisdom
+		return a.Wisdom
+
 	case AbilityKindIntelligence:
-		return &a.Intelligence
+		return a.Intelligence
+
 	case AbilityKindCharisma:
-		return &a.Charisma
+		return a.Charisma
+
 	default:
-		return nil
+		msg := "unknown ability kind: %v"
+		panic(fmt.Sprintf(msg, kind))
 	}
 }

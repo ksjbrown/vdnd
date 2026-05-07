@@ -1,97 +1,27 @@
 package core
 
-var featProviders map[FeatKind]FeatProvider
+import "encoding/json"
 
-func registerFeatProvider(kind FeatKind, provider FeatProvider) {
-
+type FeatData struct {
+	Kind FeatKind
+	Data json.RawMessage
 }
 
-func init() {
-	featProviders = map[FeatKind]FeatProvider{}
-	// TODO: complete mapping
-	registerFeatProvider(FeatKindAbilityScoreImprovement, func() Feat { return struct{}{} })
+type Feat interface {
+	ApplyToCharacter(*Character)
 }
 
-type Feat interface {}
+func NewFeat(data *FeatData) Feat {
+	panic("unimplememnted")
+}
 
-type FeatProvider = func() Feat
+// -- Implementations --
 
-type FeatKind int
+type AbilityScoreImprovementFeat struct {
+	abilityKind AbilityKind
+	value int
+}
 
-const (
-	FeatKindAbilityScoreImprovement   FeatKind = 0x01
-	FeatKindActor                     FeatKind = 0x02
-	FeatKindAlert                     FeatKind = 0x03
-	FeatKindArchery                   FeatKind = 0x04
-	FeatKindAthlete                   FeatKind = 0x05
-	FeatKindBlindFighting             FeatKind = 0x06
-	FeatKindBoonOfCombatProwess       FeatKind = 0x07
-	FeatKindBoonOfDimensionalTravel   FeatKind = 0x08
-	FeatKindBoonOfEnergyResistance    FeatKind = 0x09
-	FeatKindBoonOfFate                FeatKind = 0x0A
-	FeatKindBoonOfFortitude           FeatKind = 0x0B
-	FeatKindBoonOfIrresistableOffence FeatKind = 0x0C
-	FeatKindBoonOfRecovery            FeatKind = 0x0D
-	FeatKindBoonOfSkill               FeatKind = 0x0E
-	FeatKindBoonOfSpeed               FeatKind = 0x0F
-	FeatKindBoonOfSpellRecall         FeatKind = 0x10
-	FeatKindBoonOfTheNightSpirit      FeatKind = 0x11
-	FeatKindBoonOfTruesight           FeatKind = 0x12
-	FeatKindCharger                   FeatKind = 0x13
-	FeatKindChef                      FeatKind = 0x14
-	FeatKindCrafter                   FeatKind = 0x15
-	FeatKindCrossbowExpert            FeatKind = 0x16
-	FeatKindCrusher                   FeatKind = 0x17
-	FeatKindDefence                   FeatKind = 0x18
-	FeatKindDefenciveDualist          FeatKind = 0x19
-	FeatKindDualWielder               FeatKind = 0x1A
-	FeatKindDueling                   FeatKind = 0x1B
-	FeatKindDurable                   FeatKind = 0x1C
-	FeatKindElementalAdept            FeatKind = 0x1D
-	FeatKindFeyTouched                FeatKind = 0x1E
-	FeatKindGrappler                  FeatKind = 0x1F
-	FeatKindGreatWeaponFighting       FeatKind = 0x20
-	FeatKindGreatWeaponmaster         FeatKind = 0x21
-	FeatKindHealer                    FeatKind = 0x22
-	FeatKindHeavilyArmored            FeatKind = 0x23
-	FeatKindHeavyArmorMaster          FeatKind = 0x24
-	FeatKindInspiringLeader           FeatKind = 0x25
-	FeatKindInterception              FeatKind = 0x26
-	FeatKindKeenMind                  FeatKind = 0x27
-	FeatKindLightlyArmored            FeatKind = 0x28
-	FeatKindLucky                     FeatKind = 0x29
-	FeatKindMageSlayer                FeatKind = 0x2A
-	FeatKindMagicInitiate             FeatKind = 0x2B
-	FeatKindMartialWeaponTraining     FeatKind = 0x2C
-	FeatKindMediumArmorMaster         FeatKind = 0x2D
-	FeatKindModeratelyArmored         FeatKind = 0x2E
-	FeatKindMountedCombatant          FeatKind = 0x2F
-	FeatKindMusician                  FeatKind = 0x30
-	FeatKindObservant                 FeatKind = 0x31
-	FeatKindPiercer                   FeatKind = 0x32
-	FeatKindPoisoner                  FeatKind = 0x33
-	FeatKindPolearmMaster             FeatKind = 0x34
-	FeatKindProtection                FeatKind = 0x35
-	FeatKindResilient                 FeatKind = 0x36
-	FeatKindRitualCaster              FeatKind = 0x37
-	FeatKindSavageAttacker            FeatKind = 0x38
-	FeatKindSentinel                  FeatKind = 0x39
-	FeatKindShadowTouched             FeatKind = 0x3A
-	FeatKindSharpshooter              FeatKind = 0x3B
-	FeatKindShieldMaster              FeatKind = 0x3C
-	FeatKindSkilled                   FeatKind = 0x3D
-	FeatKindSkillExpert               FeatKind = 0x3E
-	FeatKindSkulker                   FeatKind = 0x3F
-	FeatKindSlasher                   FeatKind = 0x40
-	FeatKindSpeedy                    FeatKind = 0x41
-	FeatKindSpellSniper               FeatKind = 0x42
-	FeatKindTavernBrawler             FeatKind = 0x43
-	FeatKindTelekinetic               FeatKind = 0x44
-	FeatKindTelepathic                FeatKind = 0x45
-	FeatKindThrownWeaponFighting      FeatKind = 0x46
-	FeatKindTough                     FeatKind = 0x47
-	FeatKindTwoWeaponFighting         FeatKind = 0x48
-	FeatKindUnarmedFighting           FeatKind = 0x49
-	FeatKindWarCaster                 FeatKind = 0x4A
-	FeatKindWeaponMaster              FeatKind = 0x4B
-)
+func (f *AbilityScoreImprovementFeat) ApplyToCharacter(c *Character) {
+	c.AbilitiesMutator.
+}
