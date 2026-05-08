@@ -1,18 +1,30 @@
 package core
 
 type Weapon struct {
-	Item
-	ID WeaponID
-	Kind WeaponKind
-	Properties []WeaponProperty
+	ID              WeaponID
+	Name 			string
+	Category        WeaponCategory
+	Properties      []WeaponProperty
+	MasteryProperty WeaponMasteryProperty
+
+	equipCondition func(*Character) bool
 }
+
+func (w *Weapon) IsEquippableBy(c *Character) bool {
+	if w.equipCondition == nil {
+		return true
+	}
+	return w.equipCondition(c)
+}
+
 
 type WeaponID uint
 
-type WeaponKind int
+type WeaponCategory int
 
-type WeaponProperty struct {
-	kind WeaponPropertyKind
-}
+const (
+	WeaponCategorySimple  WeaponCategory = 0x1
+	WeaponCategoryMartial WeaponCategory = 0x2
+)
 
-type WeaponPropertyKind int
+

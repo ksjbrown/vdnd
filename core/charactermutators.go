@@ -1,19 +1,21 @@
 package core
 
-type CharacterMutators struct {
-	AbilitiesMutator
-	AttackRollMutator
-	ArmorClassMutator
+// CharacterModifiers is a collection of all mutators that are associated with a Character
+type CharacterModifiers struct {
+	Abilities   AbilityModifiers
+	AttackRolls AttackRollModifiers
+	ArmorClass  ArmorClassModifiers
 }
 
-type AbilitiesMutator struct {
-	DeltaMutatorMap[AbilityKind]
+type AbilityModifiers struct {
+	CompositeBonusProviderMap[AbilityKind]
 }
 
-type ArmorClassMutator struct {
-	DeltaMutatorComposite
+type ArmorClassModifiers struct {
+	CompositeBonusProvider
 }
 
-type AttackRollMutator struct {
-	DeltaMutatorComposite
+type AttackRollModifiers struct {
+	CompositeBonusProvider
+	CompositeAdvantageProvider
 }

@@ -1,12 +1,51 @@
 package core
 
+import "fmt"
+
 type Ability int
 
-func (a Ability) ModifierBonus() int {
+func (a Ability) BonusModifier() int {
 	// offset from 10, divided by 2, rounded down
-	value := int(a) - 10
-	if value >= 0 {
-		return value / 2
+	offset := int(a) - 10
+	if offset >= 0 {
+		return offset / 2
 	}
-	return (value - 1) / 2
+	return (offset - 1) / 2
+}
+
+// Abilities holds the six ability scores for a character.
+type Abilities struct {
+	Strength     Ability
+	Dexterity    Ability
+	Constitution Ability
+	Wisdom       Ability
+	Intelligence Ability
+	Charisma     Ability
+}
+
+func (a *Abilities) GetAbility(kind AbilityKind) Ability {
+	switch kind {
+
+	case AbilityKindStrength:
+		return a.Strength
+
+	case AbilityKindDexterity:
+		return a.Dexterity
+
+	case AbilityKindConstitution:
+		return a.Constitution
+
+	case AbilityKindWisdom:
+		return a.Wisdom
+
+	case AbilityKindIntelligence:
+		return a.Intelligence
+
+	case AbilityKindCharisma:
+		return a.Charisma
+
+	default:
+		msg := "unknown ability kind: %v"
+		panic(fmt.Sprintf(msg, kind))
+	}
 }

@@ -3,13 +3,13 @@ package core
 type AbilityMutatorUndo = func()
 
 type AbilityMutator interface {
-	GetAbilityValueDelta() int
+	GetAbilityValueBonus() int
 }
 
-type FixedDeltaAbilityMutator struct {
+type FixedBonusAbilityMutator struct {
 	delta int
 }
 
-func (m *FixedDeltaAbilityMutator) GetAbilityValueDelta() int {
+func (m *FixedBonusAbilityMutator) GetAbilityValueBonus() int {
 	return m.delta
 }

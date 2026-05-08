@@ -8,7 +8,6 @@ type FeatData struct {
 }
 
 type Feat interface {
-	ApplyToCharacter(*Character)
 }
 
 func NewFeat(data *FeatData) Feat {
@@ -22,6 +21,6 @@ type AbilityScoreImprovementFeat struct {
 	value int
 }
 
-func (f *AbilityScoreImprovementFeat) ApplyToCharacter(c *Character) {
-	c.AbilitiesMutator.
+func (f *AbilityScoreImprovementFeat) MutateAbility(a *AbilityModifiers) {
+	
 }

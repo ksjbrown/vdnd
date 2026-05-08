@@ -8,16 +8,23 @@ func Test_CharacterAbility(t *testing.T) {
 			Strength: 17,
 		},
 	}
-	mutator := &DeltaMutatorFunc{func() int {
+	dp := &BonusProviderFunc{func() int {
 		return 1
 	}}
-	c.AbilitiesMutator.SetDeltaMutator(
+	c.modifiers.Abilities.AppendBonusProvider(
 		AbilityKindStrength,
-		mutator,
+		dp,
 	)
 	ability := c.GetAbility(AbilityKindStrength)
 	if ability != Ability(18) {
 		t.Errorf("expected 18, got %v", ability)
 	}
-
+	c.modifiers.Abilities.AppendBonusProvider(
+		AbilityKindStrength,
+		dp,
+	)
+	ability = c.GetAbility(AbilityKindStrength)
+	if ability != Ability(19) {
+		t.Errorf("expected 19, got %v", ability)
+	}
 }

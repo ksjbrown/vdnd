@@ -1,14 +1,7 @@
 package core
 
 type Item struct {
-	weight int
-	value int
+	Weight int
+	Value int
 }
 
-func (i *Item) Weight() int {
-	return i.weight
-}
-
-func (i *Item) Value() int {
-	return i.value
-}
