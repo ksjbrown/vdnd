@@ -1,7 +1,31 @@
 package core
 
-type ArmorClassProvider interface {
-	GetArmorClass() ArmorClass
+// SupportsArmorClass represents a type that can provide an armor class value
+//
+// Usually this means that anything that can attack, can attack this thing.
+type SupportsArmorClass interface {
+	GetArmorClass() int
 }
 
-type ArmorClass int
+// ArmorClass provides methods to represent something that can provide an ArmorClass value.
+type ArmorClass struct {
+	SupportsBonuses
+	BaseValue int
+	BaseValueBonuses []Bonus
+}
+
+func NewArmorClass(baseValue int) *ArmorClass {
+	return &ArmorClass{
+		SupportsBonuses: NewSimpleBonusSupporter(),
+		BaseValue: baseValue,
+		BaseValueBonuses: make([]Bonus, 0),
+	}
+}
+
+func (ac *ArmorClass) GetArmorClass() int {
+	maxBaseValueBonus := 0
+	for _, bonus := range ac.BaseValueBonuses {
+		maxBaseValueBonus = max(maxBaseValueBonus, bonus.GetBonusValue())
+	}
+	return ac.BaseValue + maxBaseValueBonus + ac.ComputeBonuses()
+}
