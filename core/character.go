@@ -24,15 +24,16 @@ func (c *Character) GetAbility(kind AbilityKind) Ability {
 
 func (c *Character) GetArmorClass() ArmorClass {
 	ac := c.BaseArmorClass
-	delta := c.modifiers.ArmorClass.GetBonus()
-	return ac + ArmorClass(delta)
+	bonus := c.modifiers.ArmorClass.GetBonus()
+	return ac + ArmorClass(bonus)
 }
 
-func (c *Character) DoAttackRoll(ac ArmorClass) *D20TestResult {
+func (c *Character) GetAttackRollResult(target ArmorClass) *D20TestResult {
 	die := NewDieD20()
-	bonus := c.modifiers.AttackRolls.GetBonus()
-	advantage := c.modifiers.AttackRolls.GetAdvantage()
-	test := NewD20Test(die, bonus, advantage, int(ac))
+	modifiers := &c.modifiers.AttackRolls
+	bonus := modifiers.GetBonus()
+	advantage := modifiers.GetAdvantage()
+	test := NewD20Test(die, bonus, advantage, int(target))
 	return test.DoTest()
 }
 
