@@ -1,11 +1,17 @@
 package core
 
+type BackgroundData struct {
+	Kind BackgroundKind
+	Feat FeatData
+}
+
 // Background defines the background of the character,
 // and the selected feats, ability boosts, etc.
 type Background struct {
 	Kind BackgroundKind
 	Feat Feat
-	Proficiencies *BackgroundProficiencies
+	SkillProficiencies []SkillProficiency
+	ToolProficiencies []ToolProficiency
 }
 
 type BackgroundKind int
@@ -28,10 +34,3 @@ const (
 	BackgroundKindSoldier     BackgroundKind = 0x0F
 	BackgroundKindWayfarer    BackgroundKind = 0x10
 )
-
-type BackgroundProficiencies struct {
-	// TODO: restructure these
-	Skills []Skill
-	Tools  []Tool
-}
-

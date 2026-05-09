@@ -23,9 +23,9 @@ func NewArmorClass(baseValue int) *ArmorClass {
 }
 
 func (ac *ArmorClass) GetArmorClass() int {
-	maxBaseValueBonus := 0
+	baseValueBonus := 0
 	for _, bonus := range ac.BaseValueBonuses {
-		maxBaseValueBonus = max(maxBaseValueBonus, bonus.GetBonusValue())
+		baseValueBonus = max(baseValueBonus, bonus.GetBonusValue())
 	}
-	return ac.BaseValue + maxBaseValueBonus + ac.ComputeBonuses()
+	return ac.BaseValue + baseValueBonus + ac.ComputeBonuses()
 }

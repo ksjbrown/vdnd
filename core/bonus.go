@@ -7,6 +7,15 @@ type Bonus interface {
 	GetBonusValue() int
 }
 
+// SupportsBonuses defines a sensible set of operations for supporting bonuses
+type SupportsBonuses interface {
+	AddBonus(Bonus)
+	GetBonus(key any) Bonus
+	HasBonus(Bonus) bool
+	RemoveBonus(Bonus)
+	ComputeBonuses() int
+}
+
 // BonusKeyProvider provides a simple embeddable implementation for GetBonusKey()
 // It is not really intented to be used on its own.
 type BonusKeyProvider struct {
@@ -53,15 +62,6 @@ func NewFuncBonus(key any, valueFunc func() int) *FuncBonus {
 
 func (b *FuncBonus) GetBonusValue() int {
 	return b.ValueFunc()
-}
-
-// SupportsBonuses defines a sensible set of operations for supporting bonuses
-type SupportsBonuses interface {
-	AddBonus(Bonus)
-	GetBonus(key any) Bonus
-	HasBonus(Bonus) bool
-	RemoveBonus(Bonus)
-	ComputeBonuses() int
 }
 
 // SimpleBonusSupporter is a basic, map backed store of Bonuses.
