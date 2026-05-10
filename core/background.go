@@ -1,17 +1,34 @@
 package core
 
+type SupportsBackground interface {
+	GetBackground() BackgroundKind
+	GetBackgroundFeat() Feat
+	GetBackgroundSkillProficiencies() []SkillKind
+	GetBackgroundToolProficiencies() []ToolKind
+}
+
 type BackgroundData struct {
 	Kind BackgroundKind
 	Feat FeatData
 }
 
-// Background defines the background of the character,
+// Background implements the SupportsBackground interface.
+//
+// It defines the background of the character,
 // and the selected feats, ability boosts, etc.
 type Background struct {
-	Kind BackgroundKind
-	Feat Feat
-	SkillProficiencies []SkillProficiency
-	ToolProficiencies []ToolProficiency
+	kind BackgroundKind
+	feat Feat
+	skillProficiencies []SkillKind
+	toolProficiencies []ToolKind
+}
+
+func (b *Background) GetBackground() BackgroundKind {
+	return b.kind
+}
+
+func (b *Background) GetBackgroundFeat() Feat {
+	return b.feat
 }
 
 type BackgroundKind int

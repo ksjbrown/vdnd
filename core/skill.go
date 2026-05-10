@@ -1,9 +1,5 @@
 package core
 
-type Skill struct {
-	kind SkillKind
-}
-
 // SkillKind represents a skill that a Character might have.
 //
 // It doesn't have a value, a Character either has this skill proficiency, or he does not.

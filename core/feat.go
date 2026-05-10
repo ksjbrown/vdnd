@@ -2,14 +2,17 @@ package core
 
 import "encoding/json"
 
+type SupportsFeats interface {
+	AddFeat(Feat)
+
+}
+
 type Feat interface {
 	GetFeatKind() FeatKind
 	IsRepeatable() bool
+	GetEffects() []Effect
 }
 
-type SupportsFeats interface {
-	AddFeat(Feat)
-}
 
 type FeatData struct {
 	Kind FeatKind
@@ -20,44 +23,31 @@ func NewFeat(data *FeatData) Feat {
 	panic("unimplememnted")
 }
 
+// FeatMap implements SupportsFeats
+//
+// It supports storing feats, and handles feats that are repeatable
+type FeatMap struct {
+
+}
+
 // -- Implementations --
 
-// BaseFeat provides the minimal required data for a Feat,
-// as well as no-op implementations for every possible place a feat can manipulate game state.
-type BaseFeat struct {
-	kind       FeatKind
-	repeatable bool
-}
-
-func NewBaseFeat(kind FeatKind, repeatable bool) *BaseFeat {
-	return &BaseFeat{
-		kind: kind,
-		repeatable: repeatable,
-	}
-}
-
-func (f *BaseFeat) GetFeatKind() FeatKind {
-	return f.kind
-}
-
-func (f *BaseFeat) IsRepeatable() bool {
-	return f.repeatable
-}
-
 type AbilityScoreImprovementFeat struct {
-	Feat
+	Kind AbilityKind
+	Value int
 }
 
-func NewAbilityScoreImprovementFeat() *AbilityScoreImprovementFeat {
-	return &AbilityScoreImprovementFeat{
-		Feat: &BaseFeat{
-			kind:       FeatKindAbilityScoreImprovement,
-			repeatable: true,
-		},
-	}
+func (f *AbilityScoreImprovementFeat) GetFeatKind() FeatKind {
+	return FeatKindAbilityScoreImprovement
 }
+
+
 
 func (f *AbilityScoreImprovementFeat) GetBonus() Bonus {
-	bonus := NewSimpleBonus(FeatKindAbilityScoreImprovement, f.value)
+	bonus := NewValueBonus(
+		FeatKindAbilityScoreImprovement,
+		f.Value,
+	)
+	return bonus
 
 }

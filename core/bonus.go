@@ -10,114 +10,88 @@ type Bonus interface {
 // SupportsBonuses defines a sensible set of operations for supporting bonuses
 type SupportsBonuses interface {
 	AddBonus(Bonus)
-	GetBonus(key any) Bonus
-	HasBonus(Bonus) bool
 	RemoveBonus(Bonus)
-	ComputeBonuses() int
+	HasBonus(Bonus) bool
+	GetBonus(key any) Bonus
 }
 
-// BonusKeyProvider provides a simple embeddable implementation for GetBonusKey()
+// ValueBonusKey provides a simple embeddable implementation for GetBonusKey()
 // It is not really intented to be used on its own.
-type BonusKeyProvider struct {
+type ValueBonusKey struct {
 	Key any
 }
 
-func NewBonusKeyProvider(key any) *BonusKeyProvider {
-	return &BonusKeyProvider{Key: key}
+func NewValueBonusKey(key any) *ValueBonusKey {
+	return &ValueBonusKey{Key: key}
 }
 
-func (p *BonusKeyProvider) GetBonusKey() any {
+func (p *ValueBonusKey) GetBonusKey() any {
 	return p.Key
 }
 
-// DeltaBonus implements the Bonus interface, and returns the stored Value via GetBonusValue()
-type SimpleBonus struct {
-	BonusKeyProvider
+// ValueBonus implements the Bonus interface, and returns the stored Value via GetBonusValue()
+type ValueBonus struct {
+	ValueBonusKey
 	Value int
 }
 
-func NewSimpleBonus(key any, value int) *SimpleBonus {
-	return &SimpleBonus{
-		BonusKeyProvider: BonusKeyProvider{Key: key},
-		Value:            value,
+func NewValueBonus(key any, value int) *ValueBonus {
+	return &ValueBonus{
+		ValueBonusKey: ValueBonusKey{Key: key},
+		Value:         value,
 	}
 }
 
-func (b *SimpleBonus) GetBonusValue() int {
+func (b *ValueBonus) GetBonusValue() int {
 	return b.Value
 }
 
 // FuncBonus implements the Bonus interface, and evaluates ValueFunc when calling GetBonusValue()
 type FuncBonus struct {
-	BonusKeyProvider
-	ValueFunc func() int
+	ValueBonusKey
+	Func func() int
 }
 
 func NewFuncBonus(key any, valueFunc func() int) *FuncBonus {
 	return &FuncBonus{
-		BonusKeyProvider: BonusKeyProvider{Key: key},
-		ValueFunc:        valueFunc,
+		ValueBonusKey: ValueBonusKey{Key: key},
+		Func:          valueFunc,
 	}
 }
 
 func (b *FuncBonus) GetBonusValue() int {
-	return b.ValueFunc()
+	return b.Func()
 }
 
-// SimpleBonusSupporter is a basic, map backed store of Bonuses.
+// BonusMap is a basic, map backed store of Bonuses.
 //
 // Bonuses are uniquely identified by GetBonusKey()
-type SimpleBonusSupporter struct {
+type BonusMap struct {
 	bonuses map[any]Bonus
 }
 
-func NewSimpleBonusSupporter() *SimpleBonusSupporter {
-	return &SimpleBonusSupporter{
+func NewBonusMap() *BonusMap {
+	return &BonusMap{
 		bonuses: make(map[any]Bonus),
 	}
 }
 
-func (s *SimpleBonusSupporter) AddBonus(b Bonus) {
+func (s *BonusMap) AddBonus(b Bonus) {
 	key := b.GetBonusKey()
 	s.bonuses[key] = b
 }
 
-func (s *SimpleBonusSupporter) GetBonus(key any) Bonus {
-	return s.bonuses[key]
+func (s *BonusMap) RemoveBonus(b Bonus) {
+	key := b.GetBonusKey()
+	delete(s.bonuses, key)
 }
 
-func (s *SimpleBonusSupporter) HasBonus(b Bonus) bool {
+func (s *BonusMap) HasBonus(b Bonus) bool {
 	key := b.GetBonusKey()
 	_, found := s.bonuses[key]
 	return found
 }
 
-func (s *SimpleBonusSupporter) RemoveBonus(b Bonus) {
-	key := b.GetBonusKey()
-	delete(s.bonuses, key)
-}
-
-func (s *SimpleBonusSupporter) ComputeBonuses() int {
-	bonus := 0
-	for _, b := range s.bonuses {
-		bonus += b.GetBonusValue()
-	}
-	return bonus
-}
-
-// CompositeBonus uses the SimpleBonusSupporter to compose multiple bonuses under the Bonus interface.
-type CompositeBonus struct {
-	BonusKeyProvider
-	SimpleBonusSupporter
-}
-
-func NewCompositeBonus(key any) *CompositeBonus {
-	return &CompositeBonus{
-		BonusKeyProvider:     *NewBonusKeyProvider(key),
-		SimpleBonusSupporter: *NewSimpleBonusSupporter(),
-	}
-}
-
-func (b *CompositeBonus) GetBonusValue() int {
-	return b.ComputeBonuses()
+func (s *BonusMap) GetBonus(key any) Bonus {
+	return s.bonuses[key]
 }

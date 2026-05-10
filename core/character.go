@@ -1,9 +1,14 @@
 package core
 
+type CharacterData struct {
+
+}
+
 type Character struct {
 	ID             CharacterID
-	Abilities
-	ArmorClass
+	SupportsAbilties
+	SupportsArmorClass
+	SupportsFeats
 	Background     Background
 	Class          Class
 	Subclasses     []Class
@@ -15,5 +20,12 @@ type Character struct {
 
 	modifiers CharacterModifiers
 }
+
+func NewCharacter(d *CharacterData) *Character {
+	return &Character{
+		SupportsAbilties: &Abilities{},
+	}
+}
+
 
 type CharacterID uint

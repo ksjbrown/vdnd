@@ -12,6 +12,15 @@ type SupportsAbilties interface {
 	GetCharisma() *Ability
 }
 
+type AbilityData struct {
+	Strength     int
+	Dexterity    int
+	Constitution int
+	Wisdom       int
+	Intelligence int
+	Charisma     int 
+}
+
 // Abilities holds the six ability scores for a character.
 type Abilities struct {
 	Strength     Ability
@@ -87,22 +96,31 @@ type Ability struct {
 
 func NewAbility(baseScore int) *Ability {
 	return &Ability{
-		SupportsBonuses: NewSimpleBonusSupporter(),
+		SupportsBonuses: NewBonusMap(),
 		BaseScore:       baseScore,
 	}
 }
 
 func (a *Ability) Score() int {
-	return a.BaseScore + a.ComputeBonuses()
+	return a.BaseScore + a.GetBonusTotalValue()
 }
 
 func (a *Ability) Modifier() int {
-	// offset from 10, divided by 2, rounded down
-	score := a.Score()
-	offset := int(score) - 10
+	// score offset from 10, divided by 2, rounded down
+	offset := a.Score() - 10
 	if offset >= 0 {
 		return offset / 2
 	}
 	return (offset - 1) / 2
 }
 
+type AbilityKind int
+
+const (
+	AbilityKindStrength     AbilityKind = 0x1
+	AbilityKindDexterity    AbilityKind = 0x2
+	AbilityKindConstitution AbilityKind = 0x3
+	AbilityKindWisdom       AbilityKind = 0x4
+	AbilityKindIntelligence AbilityKind = 0x5
+	AbilityKindCharisma     AbilityKind = 0x6
+)

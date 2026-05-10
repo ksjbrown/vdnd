@@ -1,6 +1,10 @@
 package core
 
-type Effect[T any] interface {
-	ApplyTo(target T)
+type Effect interface {
+	ApplyEffectTo(target any)
+}
+
+type TargetedEffect[T any] interface {
+	ApplyEffectTo(target T)
 }
 
