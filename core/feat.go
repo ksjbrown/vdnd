@@ -3,6 +3,7 @@ package core
 import "encoding/json"
 
 type SupportsFeats interface {
+	// TODO: 
 	AddFeat(Feat)
 
 }

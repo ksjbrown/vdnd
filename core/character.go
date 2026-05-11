@@ -6,7 +6,7 @@ type CharacterData struct {
 
 type Character struct {
 	ID             CharacterID
-	SupportsAbilties
+	SupportsAbilities
 	SupportsArmorClass
 	SupportsFeats
 	Background     Background
@@ -23,7 +23,7 @@ type Character struct {
 
 func NewCharacter(d *CharacterData) *Character {
 	return &Character{
-		SupportsAbilties: &Abilities{},
+		SupportsAbilities: &Abilities{},
 	}
 }
 

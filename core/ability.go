@@ -1,85 +1,86 @@
 package core
 
-import "fmt"
-
-type SupportsAbilties interface {
-	GetAbility(AbilityKind) *Ability
-	GetStrength() *Ability
-	GetDexterity() *Ability
-	GetConstitution() *Ability
-	GetIntelligence() *Ability
-	GetWisdom() *Ability
-	GetCharisma() *Ability
+type SupportsEffectsAbilities interface {
+	AddAbilitiesEffect(Effect[SupportsAbilities])
+	RemoveAbilitiesEffect(AbilityKind, Effect[SupportsAbility])
 }
 
-type AbilityData struct {
+type SupportsAbilities interface {
+	SupportsEffectsAbilities
+	GetAbility(AbilityKind) SupportsAbility
+	GetStrength() SupportsAbility
+	GetDexterity() SupportsAbility
+	GetConstitution() SupportsAbility
+	GetIntelligence() SupportsAbility
+	GetWisdom() SupportsAbility
+	GetCharisma() SupportsAbility
+}
+
+type AbilitiesData struct {
 	Strength     int
 	Dexterity    int
 	Constitution int
 	Wisdom       int
 	Intelligence int
-	Charisma     int 
+	Charisma     int
 }
 
 // Abilities holds the six ability scores for a character.
 type Abilities struct {
-	Strength     Ability
-	Dexterity    Ability
-	Constitution Ability
-	Wisdom       Ability
-	Intelligence Ability
-	Charisma     Ability
+	abilities map[AbilityKind]*Ability
 }
 
-func (a *Abilities) GetAbility(kind AbilityKind) *Ability {
-	switch kind {
-
-	case AbilityKindStrength:
-		return &a.Strength
-
-	case AbilityKindDexterity:
-		return &a.Dexterity
-
-	case AbilityKindConstitution:
-		return &a.Constitution
-
-	case AbilityKindWisdom:
-		return &a.Wisdom
-
-	case AbilityKindIntelligence:
-		return &a.Intelligence
-
-	case AbilityKindCharisma:
-		return &a.Charisma
-
-	default:
-		msg := "unknown ability kind: %v"
-		panic(fmt.Sprintf(msg, kind))
+func NewAbilities(data *AbilitiesData) *Abilities {
+	a := make(map[AbilityKind]*Ability)
+	a[AbilityKindStrength] = NewAbility(AbilityKindStrength, data.Strength)
+	a[AbilityKindDexterity] = NewAbility(AbilityKindDexterity, data.Dexterity)
+	a[AbilityKindConstitution] = NewAbility(AbilityKindConstitution, data.Constitution)
+	a[AbilityKindWisdom] = NewAbility(AbilityKindWisdom, data.Wisdom)
+	a[AbilityKindIntelligence] = NewAbility(AbilityKindIntelligence, data.Intelligence)
+	a[AbilityKindCharisma] = NewAbility(AbilityKindCharisma, data.Charisma)
+	return &Abilities{
+		abilities: a,
 	}
 }
 
+func (a *Abilities) GetAbility(kind AbilityKind) *Ability {
+	return a.abilities[kind]
+}
+
 func (a *Abilities) GetStrength() *Ability {
-	return &a.Strength
+	return a.GetAbility(AbilityKindStrength)
 }
 
 func (a *Abilities) GetDexterity() *Ability {
-	return &a.Dexterity
+	return a.GetAbility(AbilityKindDexterity)
 }
 
 func (a *Abilities) GetConstitution() *Ability {
-	return &a.Constitution
-}
-
-func (a *Abilities) GetIntelligence() *Ability {
-	return &a.Intelligence
+	return a.GetAbility(AbilityKindConstitution)
 }
 
 func (a *Abilities) GetWisdom() *Ability {
-	return &a.Wisdom
+	return a.GetAbility(AbilityKindWisdom)
+}
+
+func (a *Abilities) GetIntelligence() *Ability {
+	return a.GetAbility(AbilityKindIntelligence)
 }
 
 func (a *Abilities) GetCharisma() *Ability {
-	return &a.Charisma
+	return a.GetAbility(AbilityKindCharisma)
+}
+
+type SupportsEffectsAbility interface {
+	AddAbilityEffect(Effect[SupportsAbility])
+	RemoveAbilityEffect(Effect[SupportsAbility])
+}
+
+type SupportsAbility interface {
+	GetAbilityKind() AbilityKind
+	GetAbilityBaseScore() int
+	GetAbilityScore() int
+	GetAbilityModifier() int
 }
 
 // Ability represents a single Ability score (STR, DEX, etc.)
@@ -91,23 +92,33 @@ func (a *Abilities) GetCharisma() *Ability {
 // - Temporary Buffs or Debuffs
 type Ability struct {
 	SupportsBonuses
-	BaseScore int
+	kind      AbilityKind
+	baseScore int
 }
 
-func NewAbility(baseScore int) *Ability {
+func NewAbility(kind AbilityKind, baseScore int) *Ability {
 	return &Ability{
 		SupportsBonuses: NewBonusMap(),
-		BaseScore:       baseScore,
+		kind:            kind,
+		baseScore:       baseScore,
 	}
 }
 
-func (a *Ability) Score() int {
-	return a.BaseScore + a.GetBonusTotalValue()
+func (a *Ability) GetAbilityKind() AbilityKind {
+	return a.kind
 }
 
-func (a *Ability) Modifier() int {
+func (a *Ability) GetAbilityBaseScore() int {
+	return a.baseScore
+}
+
+func (a *Ability) GetAbilityScore() int {
+	return a.GetAbilityBaseScore() + a.GetCombinedBonusValue()
+}
+
+func (a *Ability) GetAbilityModifier() int {
 	// score offset from 10, divided by 2, rounded down
-	offset := a.Score() - 10
+	offset := a.GetAbilityScore() - 10
 	if offset >= 0 {
 		return offset / 2
 	}
