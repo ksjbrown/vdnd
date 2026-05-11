@@ -11,7 +11,6 @@ type SupportsFeats interface {
 type Feat interface {
 	GetFeatKind() FeatKind
 	IsRepeatable() bool
-	GetEffects() []Effect
 }
 
 

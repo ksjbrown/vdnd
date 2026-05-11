@@ -58,10 +58,17 @@ type EffectMap[T any] struct {
 	effects map[any]Effect[T]
 }
 
+func NewEffectMap[T any](target T) *EffectMap[T] {
+	return &EffectMap[T]{
+		target:  target,
+		effects: make(map[any]Effect[T]),
+	}
+}
+
 func (m *EffectMap[T]) AddEffect(effect Effect[T]) {
 	key := effect.GetEffectKey()
 	existingEffect := m.GetEffect(key)
-	if (existingEffect != nil) {
+	if existingEffect != nil {
 		m.RemoveEffect(existingEffect)
 	}
 	effect.ActivateEffect(m.target)

@@ -11,7 +11,6 @@ type SupportsArmorClass interface {
 
 type SupportsEffectsArmorClass interface {
 	AddArmorClassEffect(Effect[SupportsArmorClass])
-	GetArmorClassEffect(Effect[SupportsArmorClass])
 	RemoveArmorClassEffect(Effect[SupportsArmorClass])
 }
 
@@ -21,15 +20,17 @@ type ArmorClass struct {
 	BaseValue int
 	BaseValueBonuses SupportsBonuses
 
-	effects SupportsEffects[ArmorClass]
+	effects *EffectMap[SupportsArmorClass]
 }
 
 func NewArmorClass(baseValue int) *ArmorClass {
-	return &ArmorClass{
+	ac := &ArmorClass{
 		SupportsBonuses: NewBonusMap(),
 		BaseValue: baseValue,
 		BaseValueBonuses: NewBonusMap(),
 	}
+	ac.effects = NewEffectMap(SupportsArmorClass(ac))
+	return ac
 }
 
 func (ac *ArmorClass) GetArmorClass() int {
@@ -38,5 +39,13 @@ func (ac *ArmorClass) GetArmorClass() int {
 	for bonus := range ac.BaseValueBonuses.IterateBonuses() {
 		baseValueBonus = max(baseValueBonus, bonus.GetBonusValue())
 	}
-	return ac.BaseValue + baseValueBonus + ac.ComputeBonuses()
+	return ac.BaseValue + baseValueBonus + ac.GetCombinedBonusValue()
+}
+
+func (ac *ArmorClass) AddArmorClassEffect(effect Effect[SupportsArmorClass]) {
+	ac.effects.AddEffect(effect)
+}
+
+func (ac *ArmorClass) RemoveArmorClassEffect(effect Effect[SupportsArmorClass]) {
+	ac.effects.RemoveEffect(effect)
 }

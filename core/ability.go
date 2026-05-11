@@ -2,18 +2,18 @@ package core
 
 type SupportsEffectsAbilities interface {
 	AddAbilitiesEffect(Effect[SupportsAbilities])
-	RemoveAbilitiesEffect(AbilityKind, Effect[SupportsAbility])
+	RemoveAbilitiesEffect(Effect[SupportsAbilities])
 }
 
 type SupportsAbilities interface {
 	SupportsEffectsAbilities
-	GetAbility(AbilityKind) SupportsAbility
-	GetStrength() SupportsAbility
-	GetDexterity() SupportsAbility
-	GetConstitution() SupportsAbility
-	GetIntelligence() SupportsAbility
-	GetWisdom() SupportsAbility
-	GetCharisma() SupportsAbility
+	GetAbility(AbilityKind) *Ability
+	GetStrength() *Ability
+	GetDexterity() *Ability
+	GetConstitution() *Ability
+	GetIntelligence() *Ability
+	GetWisdom() *Ability
+	GetCharisma() *Ability
 }
 
 type AbilitiesData struct {
@@ -28,6 +28,7 @@ type AbilitiesData struct {
 // Abilities holds the six ability scores for a character.
 type Abilities struct {
 	abilities map[AbilityKind]*Ability
+	effects *EffectMap[SupportsAbilities]
 }
 
 func NewAbilities(data *AbilitiesData) *Abilities {
@@ -71,18 +72,13 @@ func (a *Abilities) GetCharisma() *Ability {
 	return a.GetAbility(AbilityKindCharisma)
 }
 
-type SupportsEffectsAbility interface {
-	AddAbilityEffect(Effect[SupportsAbility])
-	RemoveAbilityEffect(Effect[SupportsAbility])
+func (a *Abilities) AddAbilitiesEffect(effect Effect[SupportsAbilities]) {
+	a.effects.AddEffect(effect)
 }
 
-type SupportsAbility interface {
-	GetAbilityKind() AbilityKind
-	GetAbilityBaseScore() int
-	GetAbilityScore() int
-	GetAbilityModifier() int
+func (a *Abilities) RemoveAbilitiesEffect(effect Effect[SupportsAbilities]) {
+	a.effects.RemoveEffect(effect)
 }
-
 // Ability represents a single Ability score (STR, DEX, etc.)
 //
 // An Ability Score consists of a BaseScore, as well as any number of Bonuses, like:

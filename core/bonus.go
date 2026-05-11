@@ -60,11 +60,10 @@ func (b *FuncBonus) GetBonusValue() int {
 // SupportsBonuses defines a sensible set of operations for supporting bonuses.
 //
 // SupportsBonuses can add bonuses for the same key, but only the best value for a given key is included in the combined bonus method.
+// Adding the exact same bonus is a no-op
 type SupportsBonuses interface {
 	AddBonus(Bonus)
 	RemoveBonus(Bonus)
-	HasBonus(Bonus) bool
-	GetBonus(key any) Bonus
 	GetCombinedBonusValue() int
 	IterateBonuses() iter.Seq[Bonus]
 }
@@ -90,13 +89,12 @@ func (s *BonusMap) RemoveBonus(b Bonus) {
 	delete(s.bonuses, b)
 }
 
-func (s *BonusMap) HasBonus(b Bonus) bool {
-	_, found := s.bonuses[b]
-	return found
-}
-
 func (s *BonusMap) GetCombinedBonusValue() int {
-	panic("unimplemented")
+	value := 0
+	for bonus := range s.bonuses {
+		value += bonus.GetBonusValue()
+	}
+	return value
 }
 
 func (s *BonusMap) IterateBonuses() iter.Seq[Bonus] {

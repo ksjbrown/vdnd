@@ -20,8 +20,8 @@ func TestAbilitiesModifier(t *testing.T) {
 		{value: 14, modifier: 2},
 	}
 	for _, tc := range tcs {
-		ability := Ability(tc.value)
-		modifier := ability.BonusModifier()
+		ability := NewAbility(0, tc.value)
+		modifier := ability.GetAbilityModifier()
 		if tc.modifier != modifier {
 			t.Errorf("ability score '%v' expects modifier '%v', got '%v'", tc.value, tc.modifier, modifier)
 		}

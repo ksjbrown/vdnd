@@ -1,7 +1,7 @@
 package core
 
 type CharacterData struct {
-
+	AbilitiesData
 }
 
 type Character struct {
@@ -17,13 +17,12 @@ type Character struct {
 	Progression    Progression
 	Inventory      Inventory
 	Loadout        Loadout
-
-	modifiers CharacterModifiers
 }
 
 func NewCharacter(d *CharacterData) *Character {
 	return &Character{
 		SupportsAbilities: &Abilities{},
+		// TODO: complete
 	}
 }
 
