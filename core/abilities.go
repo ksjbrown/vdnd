@@ -1,12 +1,6 @@
 package core
 
-type SupportsEffectsAbilities interface {
-	AddAbilitiesEffect(Effect[SupportsAbilities])
-	RemoveAbilitiesEffect(Effect[SupportsAbilities])
-}
-
 type SupportsAbilities interface {
-	SupportsEffectsAbilities
 	GetAbility(AbilityKind) *Ability
 	GetStrength() *Ability
 	GetDexterity() *Ability
@@ -14,6 +8,8 @@ type SupportsAbilities interface {
 	GetIntelligence() *Ability
 	GetWisdom() *Ability
 	GetCharisma() *Ability
+	AddAbilitiesEffect(Effect[SupportsAbilities])
+	RemoveAbilitiesEffect(Effect[SupportsAbilities])
 }
 
 type AbilitiesData struct {
@@ -79,6 +75,7 @@ func (a *Abilities) AddAbilitiesEffect(effect Effect[SupportsAbilities]) {
 func (a *Abilities) RemoveAbilitiesEffect(effect Effect[SupportsAbilities]) {
 	a.effects.RemoveEffect(effect)
 }
+
 // Ability represents a single Ability score (STR, DEX, etc.)
 //
 // An Ability Score consists of a BaseScore, as well as any number of Bonuses, like:

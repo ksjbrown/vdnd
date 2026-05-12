@@ -2,6 +2,7 @@ package core
 
 type CharacterData struct {
 	AbilitiesData
+	// TODO: complete
 }
 
 type Character struct {
